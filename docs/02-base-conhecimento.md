@@ -3,40 +3,37 @@
 ## Dados Utilizados
 
 | Arquivo | Formato | Para que serve no Dário? |
-|---------|---------|---------------------|
-| `historico_atendimento.csv` | CSV | Contextualizar interações anteriores |
-| `perfil_investidor.json` | JSON | Personalizar as explicações sobre as dúvidas do cliente |
-| `produtos_financeiros.json` | JSON | Conhecir produtos disponíveis para que eles possam ser explicados ao cliente |
-| `transacoes.csv` | CSV | Analisar padrão de gastos do cliente e usar essas informações de forma didática |
-
----
-
-## Adaptações nos Dados
-
-Os dados foram mantidos da mesma forma, sem alteração ou adição.
+|---------|---------|-------------------------|
+| `config_usuario.json` | JSON | Armazena salário, percentual de reserva alvo e metas |
+| `categorias_padrao.json`| JSON | Mapeia descrições de gastos para categorias (Fixos vs. Livres) |
+| `transacoes.csv` | CSV | Base de dados bruta de entradas e saídas para cálculo de limites e impacto percentual |
+| `historico_reserva.csv` | CSV | Registro histórico de quanto foi poupado mês a mês para acompanhar a meta total |
+| `historico_atendimento.csv`| CSV | Contextualiza conversas passadas para que o Dário mantenha a continuidade do suporte |
+| `perfil_cliente.json` | JSON | Dados demográficos e perfil comportamental |
 
 ---
 
 ## Estratégia de Integração
 
-### Como os dados são carregados?
+### Carregamento via Código (Python)
 
-Existem duas possibilidades, injetar os dados diretamente no prompt (Ctrl + C, Ctrl + V), ou carregar os arquivos via código, como no exemplo abaixo:
+Para agentes rodando localmente (como no seu setup Streamlit + Ollama), os dados são carregados para compor o contexto da sessão:
 
 ```python
 import pandas as pd
 import json
 
-# CSVs
-historico = pd.read_csv('data/historico/atendimento.csv')
+# Carregamento de Tabelas
 transacoes = pd.read_csv('data/transacoes.csv')
+hist_atendimento = pd.read_csv('data/historico_atendimento.csv')
+hist_reserva = pd.read_csv('data/historico_reserva.csv')
 
-# JSONs
-with open ('data/perfil_investidor.json', 'r', encoding='utf-8') as f:
-    perfil = json.load(f)
+# Carregamento de Regras e Perfil
+with open('data/config_usuario.json', 'r') as f:
+    config = json.load(f)
 
-with open ('data/produtos_financeiros.json', 'r', encoding='utf-8') as f:
-    produtos = json.load(f)
+with open('data/categorias_padrao.json', 'r') as f:
+    categorias = json.load(f)
 ```
 
 ### Como os dados são usados no prompt?
@@ -44,95 +41,23 @@ with open ('data/produtos_financeiros.json', 'r', encoding='utf-8') as f:
 Para facilitar, podemos também simplesmente injetar os dados via prompt.
 
 ```text
-DADOS DO CLIENTE E PERFIL (data/perfil_investidor.json):
+DADOS DE CONFIGURAÇÃO (config_usuario.json):
 {
-  "nome": "João Silva",
-  "idade": 32,
-  "profissao": "Analista de Sistemas",
-  "renda_mensal": 5000.00,
-  "perfil_investidor": "moderado",
-  "objetivo_principal": "Construir reserva de emergência",
-  "patrimonio_total": 15000.00,
-  "reserva_emergencia_atual": 10000.00,
-  "aceita_risco": false,
-  "metas": [
-    {
-      "meta": "Completar reserva de emergência",
-      "valor_necessario": 15000.00,
-      "prazo": "2026-06"
-    },
-    {
-      "meta": "Entrada do apartamento",
-      "valor_necessario": 50000.00,
-      "prazo": "2027-12"
-    }
-  ]
+  "salario_liquido": 5000.00,
+  "percentual_reserva": 0.20,
+  "reserva_mensal_alvo": 1000.00
 }
 
-TRANSAÇÕES DO CLIENTE (data/transacoes.csv):
+ÚLTIMAS TRANSAÇÕES (transacoes.csv):
 data,descricao,categoria,valor,tipo
-2025-10-01,Salário,receita,5000.00,entrada
-2025-10-02,Aluguel,moradia,1200.00,saida
-2025-10-03,Supermercado,alimentacao,450.00,saida
-2025-10-05,Netflix,lazer,55.90,saida
-2025-10-07,Farmácia,saude,89.00,saida
-2025-10-10,Restaurante,alimentacao,120.00,saida
-2025-10-12,Uber,transporte,45.00,saida
 2025-10-15,Conta de Luz,moradia,180.00,saida
 2025-10-20,Academia,saude,99.00,saida
 2025-10-25,Combustível,transporte,250.00,saida
+2025-10-30,Reserva de Emergência,investimento,1000.00,saida
 
-HISTÓRICO DE ATENDIMENTO DO CLIENTE (historico_atendimento.csv):
-data,canal,tema,resumo,resolvido
-2025-09-15,chat,CDB,Cliente perguntou sobre rentabilidade e prazos,sim
-2025-09-22,telefone,Problema no app,Erro ao visualizar extrato foi corrigido,sim
-2025-10-01,chat,Tesouro Selic,Cliente pediu explicação sobre o funcionamento do Tesouro Direto,sim
-2025-10-12,chat,Metas financeiras,Cliente acompanhou o progresso da reserva de emergência,sim
-2025-10-25,email,Atualização cadastral,Cliente atualizou e-mail e telefone,sim
-
-PRODUTOS FINANCEIROS DISPONÍVEIS (produtos_financeiros.json):
-[
-  {
-    "nome": "Tesouro Selic",
-    "categoria": "renda_fixa",
-    "risco": "baixo",
-    "rentabilidade": "100% da Selic",
-    "aporte_minimo": 30.00,
-    "indicado_para": "Reserva de emergência e iniciantes"
-  },
-  {
-    "nome": "CDB Liquidez Diária",
-    "categoria": "renda_fixa",
-    "risco": "baixo",
-    "rentabilidade": "102% do CDI",
-    "aporte_minimo": 100.00,
-    "indicado_para": "Quem busca segurança com rendimento diário"
-  },
-  {
-    "nome": "LCI/LCA",
-    "categoria": "renda_fixa",
-    "risco": "baixo",
-    "rentabilidade": "95% do CDI",
-    "aporte_minimo": 1000.00,
-    "indicado_para": "Quem pode esperar 90 dias (isento de IR)"
-  },
-  {
-    "nome": "Fundo Multimercado",
-    "categoria": "fundo",
-    "risco": "medio",
-    "rentabilidade": "CDI + 2%",
-    "aporte_minimo": 500.00,
-    "indicado_para": "Perfil moderado que busca diversificação"
-  },
-  {
-    "nome": "Fundo de Ações",
-    "categoria": "fundo",
-    "risco": "alto",
-    "rentabilidade": "Variável",
-    "aporte_minimo": 100.00,
-    "indicado_para": "Perfil arrojado com foco no longo prazo"
-  }
-]
+HISTÓRICO DE RESERVA (historico_reserva.csv):
+- Setembro: R$ 1.000,00
+- Outubro: R$ 1.000,00 (Meta batida!)
 ```
 
 ---
@@ -142,24 +67,13 @@ PRODUTOS FINANCEIROS DISPONÍVEIS (produtos_financeiros.json):
 O exemplo de contexto montado abaixo se baseia nos dados originais da base de conhecimento, mas os sintetiza deixando apenas as informações mais relevantes e dessa forma otimizando o consumo de tokens. Entretanto, vale lembrar que, mais importante do que economizar tokens, é ter todas as informações disponíveis em seu contexto.
 
 ```
-DADOS DO CLIENTE:
-- Nome: João Silva
-- Perfil: Moderado
-- Objetivo: Construir reserva de emergência
-- Reserva atual: R$ 10.000 (meta: R$ 15.000)
+STATUS FINANCEIRO ATUAL:
 
-RESUMO DE GASTOS:
-- Moradia: R$ 1.300,00
-- Alimentação: R$ 570,00
-- Transporte: R$ 295,00
-- Saúde: R$ 188,00
-- Lazer: R$ 56,00
-- Total de saídas: R$ 2.489,00
-
-PRODUTOS DISPONÍVEIS PARA APLICAR:
-- Tesouro Selic (risco baixo)
-- CDB Liquidez Diária (risco baixo)
-- LCI/LCA (risco baixo)
-- Fundo Multimercado (risco médio)
-- Fundo de Ações (risco alto)
+Nome: João Silva
+Renda Mensal: R$ 5.000,00
+Reserva de Emergência: R$ 1.000,00 (20% protegidos)
+Custos Fixos Identificados: R$ 1.634,90
+Margem para Gastos Livres: R$ 2.365,10
+Gastos Livres Consumidos: R$ 504,00
+Saldo de Gastos Livres Disponível: R$ 1.861,10
 ```
