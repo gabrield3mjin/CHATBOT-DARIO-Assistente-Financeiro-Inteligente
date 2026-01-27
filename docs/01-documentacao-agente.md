@@ -16,7 +16,7 @@ Para operar, o agente leva como base uma métrica ideal:
 - Estebelecer um limite de 30% da renda para gastos livres
 - Manter 20% da renda como garantia de manutenção da reserva de emergência
 
-Caso não seja possível respeitar a métrica do limite de 50% para gastos fixos, o agente foca em manter o equilíbrio ao retirar proporcionalmente do limite para gastos livres, dessa forma, é garantido que 20% da renda se mantenha destinado à reserva de emergência.
+Caso não seja possível respeitar a métrica do limite de 50% para gastos fixos, o agente foca em manter o equilíbrio ao retirar proporcionalmente do limite para gastos livres, dessa forma, é garantido que 20% da renda se mantenha destinada à reserva de emergência.
 *Exemplo: se os gastos fixos chegam a 60% e o cliente não consegue encontrar formas de reduzí-lo, portanto, o agente recomenda que seja destinado somente 20% de sua renda a gastos livres.
 
 O objetivo, no entanto, não é sufocar os gastos livres (geralmente destinados a lazer): em um cenário em que os gastos fixos atingem ou superam 75% da renda do cliente, o agente dispara um alerta que recomenda a renegociação de contratos e/ou buscar por acréscimos de renda.
