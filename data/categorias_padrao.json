@@ -1,0 +1,4 @@
+{
+  "custos_fixos": ["Aluguel", "Internet", "Netflix", "Amazon Prime", "HBO+", "Disney+","Academia", "Energia", "Condomínio"],
+  "gastos_livres": ["Restaurante", "Cinema", "Lazer", "Roupas", "Uber", "99", "iFood"]
+}
