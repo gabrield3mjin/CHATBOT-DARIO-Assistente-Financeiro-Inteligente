@@ -3,7 +3,7 @@
 ## Caso de Uso
 
 ### Problema
-> Qual problema financeiro seu agente resolve?
+> Qual problema financeiro o agente resolve?
 
 Muitas pessoas, mesmo com uma renda estável, enfrentam problemas com a organização de suas despesas. Dessa forma, acumulam gastos extras e encontram dificuldade em identificá-los (para que possam cortá-los ou reduzi-los), o que os impede de manter uma reserva de emergência estruturada.
 
