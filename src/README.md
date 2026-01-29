@@ -24,3 +24,6 @@ ollama serve
 # 3. Rodar a aplicação
 streamlit run .\src\app.py
 ```
+## Evidência de Execução
+
+<img width="1871" height="926" alt="Captura de tela 2026-01-29 172027" src="https://github.com/user-attachments/assets/6bc76a72-7aaa-4391-b17c-526e211e0bf3" />
