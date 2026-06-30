@@ -4,7 +4,7 @@
 
 ```bash
 # 1. Instalar o Ollama (ollama.com)
-# 2. Instalar um modelo à sua escolha OU rodar um modelo via nuvem (RECOMENDADO! - modelos exigem muito da memória RAM para rodar localmente)
+# 2. Instalar um modelo à sua escolha OU executá-lo via nuvem (RECOMENDADO USAR A NUVEM! - executar um modelo localmente é muito custoso para a RAM da máquina)
 ollama pull gpt-oss (comando no cmd caso opte por baixar o modelo localmente)
 ```
 
@@ -21,7 +21,7 @@ pip install streamlit pandas requests
 # 2. Garantir que o Ollama está rodando
 ollama serve
 
-# 3. Rodar a aplicação
+# 3. Executar a aplicação
 streamlit run .\src\app.py
 ```
 ## Evidência de Execução
