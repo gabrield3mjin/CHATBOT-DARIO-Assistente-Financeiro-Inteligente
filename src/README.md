@@ -4,7 +4,7 @@
 
 ```bash
 # 1. Instalar o Ollama (ollama.com)
-# 2. Baixar um modelo leve OU rodar um modelo via nuvem (RECOMENDADO! - modelos exigem muito da memória RAM para rodar localmente)
+# 2. Instalar um modelo à sua escolha OU rodar um modelo via nuvem (RECOMENDADO! - modelos exigem muito da memória RAM para rodar localmente)
 ollama pull gpt-oss (comando no cmd caso opte por baixar o modelo localmente)
 ```
 
