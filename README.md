@@ -4,7 +4,7 @@ Dário (**D**iagnóstico e **A**nálise de **R**eserva com **I**nteligência **O
 
 ---
 
-## 💡 Funcionalidades Principais
+## Funcionalidades principais
 
 * **Organização Salarial**: Divide a renda em três categorias fixas: Custos Fixos, Gastos Livres e Reserva de Emergência.
 * **Gestão de Reserva**: Aplica a regra de ouro onde a reserva (padrão de 20% da renda, que pode ser alterado) é subtraída antes de qualquer cálculo de lazer.
@@ -14,7 +14,7 @@ Dário (**D**iagnóstico e **A**nálise de **R**eserva com **I**nteligência **O
 
 ---
 
-## 🛠️ Arquitetura e Tecnologia
+## Arquitetura e Tecnologia
 
 O projeto utiliza uma arquitetura RAG (*Retrieval-Augmented Generation*) para garantir respostas precisas e seguras.
 
@@ -27,7 +27,7 @@ O projeto utiliza uma arquitetura RAG (*Retrieval-Augmented Generation*) para ga
 
 ---
 
-## 📂 Estrutura de Dados
+## Estrutura de dados
 
 O agente baseia-se nos seguintes arquivos para suas análises:
 
@@ -40,7 +40,7 @@ O agente baseia-se nos seguintes arquivos para suas análises:
 
 ---
 
-## 🚀 Como Executar
+## Como executar
 
 As instruções de execução estão no README da pasta `/src`, onde também se encontra a aplicação.
 
